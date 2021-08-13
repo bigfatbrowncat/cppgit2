@@ -34,7 +34,13 @@ void index::add_entries_that_match(
   auto callback_c = [](const char *pathspec, const char *matched_pathspec,
                        void *payload) {
     auto wrapper = reinterpret_cast<callback_wrapper *>(payload);
-    return wrapper->fn(pathspec, matched_pathspec);
+    if (wrapper->fn != nullptr) {
+      return wrapper->fn(
+          pathspec != nullptr ? pathspec : "", 
+          matched_pathspec != nullptr ? matched_pathspec : "");
+    } else {
+      return 0;
+    }
   };
 
   auto pathspec_c = strarray(pathspec).c_ptr();

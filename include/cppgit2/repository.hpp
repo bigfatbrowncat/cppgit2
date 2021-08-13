@@ -50,6 +50,13 @@ public:
   // Default construct a git repo
   repository(git_repository *c_ptr = nullptr);
 
+  repository(const repository& other) = delete;
+
+  repository(repository&& other) noexcept { 
+      this->c_ptr_ = other.c_ptr_; 
+      other.c_ptr_ = nullptr; 
+  }
+
   // Free git_repository ptr
   ~repository();
 

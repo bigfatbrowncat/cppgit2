@@ -11,60 +11,60 @@ repository::~repository() {
 }
 
 repository repository::init(const std::string &path, bool is_bare) {
-  repository result(nullptr);
-  if (git_repository_init(&result.c_ptr_, path.c_str(), is_bare))
+  git_repository* c_ptr = nullptr;
+  if (git_repository_init(&c_ptr, path.c_str(), is_bare))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::init_ext(const std::string &repo_path,
                                 const init_options &options) {
-  repository result(nullptr);
-  if (git_repository_init_ext(&result.c_ptr_, repo_path.c_str(),
+  git_repository* c_ptr = nullptr;
+  if (git_repository_init_ext(&c_ptr, repo_path.c_str(),
                               options.c_ptr_))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::open(const std::string &path) {
-  repository result(nullptr);
-  if (git_repository_open(&result.c_ptr_, path.c_str()))
+  git_repository* c_ptr = nullptr;
+  if (git_repository_open(&c_ptr, path.c_str()))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::open_bare(const std::string &path) {
-  repository result(nullptr);
-  if (git_repository_open_bare(&result.c_ptr_, path.c_str()))
+  git_repository* c_ptr = nullptr;
+  if (git_repository_open_bare(&c_ptr, path.c_str()))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::open_ext(const std::string &path, open_flag flags,
                                 const std::string &ceiling_dirs) {
-  repository result(nullptr);
-  if (git_repository_open_ext(&result.c_ptr_, path.c_str(),
+  git_repository* c_ptr = nullptr;
+  if (git_repository_open_ext(&c_ptr, path.c_str(),
                               static_cast<unsigned int>(flags),
                               ceiling_dirs.c_str()))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::open_from_worktree(const worktree &wt) {
-  repository result(nullptr);
-  if (git_repository_open_from_worktree(&result.c_ptr_, wt.c_ptr_))
+  git_repository* c_ptr = nullptr;
+  if (git_repository_open_from_worktree(&c_ptr, wt.c_ptr_))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 repository repository::clone(const std::string &url,
                              const std::string &local_path,
                              const clone::options &options) {
-  repository result;
-  if (git_clone(&result.c_ptr_, url.c_str(), local_path.c_str(),
+  git_repository* c_ptr = nullptr;
+  if (git_clone(&c_ptr, url.c_str(), local_path.c_str(),
                 options.c_ptr()))
     throw git_exception();
-  return result;
+  return repository(c_ptr);
 }
 
 std::string repository::path() const {

@@ -10,6 +10,15 @@ namespace cppgit2 {
 class signature : public libgit2_api {
 public:
   signature();
+  
+  signature(signature&& other) noexcept { 
+    c_ptr_ = other.c_ptr_;
+    other.c_ptr_ = nullptr;
+  }
+
+  signature(signature& other) = delete;
+
+  virtual ~signature();
 
   // Create a new action signature with
   // 1. name of person
@@ -52,7 +61,7 @@ public:
 private:
   friend class repository;
   git_signature *c_ptr_;
-  git_signature default_;
+  //git_signature default_;
   std::string default_name_{""};
   std::string default_email_{""};
 };

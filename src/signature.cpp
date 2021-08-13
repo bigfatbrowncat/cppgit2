@@ -3,11 +3,19 @@
 namespace cppgit2 {
 
 signature::signature() {
-  default_.name = const_cast<char *>(default_name_.c_str());
+  /*default_.name = const_cast<char *>(default_name_.c_str());
   default_.email = const_cast<char *>(default_email_.c_str());
   default_.when.time = 0;
   default_.when.offset = 0;
-  c_ptr_ = &default_;
+  c_ptr_ = &default_;*/
+
+  c_ptr_ = nullptr;
+}
+
+signature::~signature() {
+  if (c_ptr_) {
+    git_signature_free(c_ptr_);
+  }
 }
 
 signature::signature(const std::string &name, const std::string &email) {
@@ -33,10 +41,10 @@ signature::signature(const git_signature *c_ptr) {
 }
 
 signature signature::copy() const {
-  signature result;
-  if (git_signature_dup(&result.c_ptr_, c_ptr_))
+  git_signature* c_ptr;
+  if (git_signature_dup(&c_ptr, c_ptr_))
     throw git_exception();
-  return result;
+  return signature(c_ptr);
 }
 
 std::string signature::name() const {

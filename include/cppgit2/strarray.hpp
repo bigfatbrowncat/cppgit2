@@ -19,6 +19,9 @@ public:
   // Construct from libgit2 C ptr
   strarray(const git_strarray *c_ptr);
 
+  strarray(const strarray& other);
+  strarray& operator = (const strarray& other);
+
   // Free the git_strarray struct
   ~strarray();
 
